@@ -2,13 +2,14 @@ LISRS Administration NOTES
 ---
 
 > **PLEASE NOTE**: This is just a <span style="color:red;">**DRAFT**</span>
+> ATTENTION, Il y a peut etre des fautes
 
 ### Services
 ##### - Search services by name
 		get-Service -DisplayName "*String*"
 ##### - Stop service
 		stop-service
-##### - Get members of services
+##### -
 		get-services | get-member
 ---
 ### ADDS
@@ -21,18 +22,19 @@ LISRS Administration NOTES
 
 ##### NTDS.dit has 4 partitions
 1. partition de domain (stock les informations sur les objets)
-2. Config (Pour deferencier les different site (physical location) sur logique) [Site ete service active directory]
-3. Schema ( structure,  nad object attributes)
-4. Application (les applications en contact avec AD)
+2. Config () [Site et service active directory]
+3. Schema ()
+4. Application ()
 
 #### Comment sauvegarder le DLL schemas
 
 	regsvr32 schemmgmt.dll
 ##### Trouver les partages local
 		net share
-##### Trouver les FSMO DS
+##### identifier les DCs avec roles FSMO
 		netdom query fsmo
 
+**FSMO ROLES**
 * Controleur de schéma
 * maitre des noms de domaine
 * controleur domaine princ
@@ -63,7 +65,7 @@ Pour ajouter plusieur utilisateur automatiquement on peut creer un fichier .bat 
 
 	dsadd user "cn=%1,ou=TANGER,dc=formation,dc=lan" -samid %1 -upn %1 -pwd P@ssw0rd -mustchpwd yes
 
-We can execute then in command line using `file.bat username`
+et dans la ligne de commande executé `file.bat username`
 
 **Modify Data**
 
@@ -127,7 +129,7 @@ add at the end of command `> filename.txt`
 		get-aduser Karim
 		remove-aduser karim
 
-##### IN CAS of aprobation relationship problems
+##### IN case of approbation relationship problems we can test with the following command
 
 		test-computersecurechannel -Server "mo2dc.lenumero.local
 
@@ -149,7 +151,7 @@ offline join
         djoin.exe /REQUESTDJ /LOADFILE c:\OOFJoin.txt /WINDOWSPATH %systemroot% /localos
 
 #### Export/Import CSV
-
+    * CSV FILES MUST CONTAIN THE HEADERS
 	>addusers.csv<
     DN,objectClass,sAMAccountName,userPrincipalName
     "CN=user1,OU=TANGER,DC=formation,dc=lan",user,user1,user1
@@ -165,9 +167,8 @@ offline join
 
 ### ADMINISTRATION DES GROUPES
 
-##### Change to reaming user profiles
-
-dsmod -profile
+##### Change to Roaming user profiles
+simply add `-Profile` as an argument
 
 ##### ADD group with command line
 	dsadd group "D_G_Tanger, ou=tanger,dc=formation,dc=lan" -scope U -secgrp yes /* no if you want a distibution group*/
@@ -175,7 +176,7 @@ dsmod -profile
 * *by default this command create the group in as Security Global, if no arguments were given*
 ---
 ##### Permissions & Autorisations
-* Refus implicite VS refus explicite (Explicit means it was refused with a name) (explicit is more powerful
+* Refus implicite VS refus explicite, explicit is more powerful
 
 1. Write only => can't access (read) folder but can copy files into it
 2. Read =>
